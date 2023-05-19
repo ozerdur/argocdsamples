@@ -135,3 +135,28 @@ ArgoCD provide two options in-cluster previleges:
         In order for ArgoCD to use a credential template for any give repository:
             - The URL configured for a credential template must match a prefix for the repository URL
             - The repository must either not be configured at all, ir if configured, must not contain any credential information
+
+
+## Sync
+    Prune deletes unused resources when syncing
+    Self Heal syncs the application after kubectl changes
+    argocd.argoproj.io/sync-options: Prune=false prevents deletion of the resource even if deleted in Git
+    argocd.argoproj.io/sync-options: Validate=false prevents validation of the resource when applying
+    argocd.argoproj.io/sync-options: Prune=Last prunes last if he application is pruned
+    argocd.argoproj.io/sync-options: Replace=true recreates the resource during the sync operation instead of apply
+    with selective-sync only changed resource are recreated
+    Waves can be used to order deployment of resources in asc order
+        argocd.argoproj.io/sync-wave: "0"
+
+
+## Tracking Strategies
+    Repo
+        - Tag
+        - Commit Sha (static)
+        - Head
+        - Branch
+
+    Helm
+        - Specific Version
+        - Range Version
+        - Latest Version
