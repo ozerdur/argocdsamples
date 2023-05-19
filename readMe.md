@@ -1,4 +1,4 @@
-# ArgCD
+# ArgoCD
 - It is  Gitops-based CD with pull model design  
 - It is NOT a CI tool.
 - Does not require open connectivity between CICD systems and the k8s cluster (more secure). 
@@ -123,3 +123,15 @@ ArgoCD provide two options in-cluster previleges:
         - argocd proj role create-token <project-name> <role-name>
             Ex: argocd proj role create-token project-with-role ci-role
         - argocd cluster list --auth-token <token-value>  or set ARGOCD_AUTH_TOKEN env variable
+
+## Repositories
+    Access ways:
+        - HTTPs: using username and password or access token
+        - SSH: using ssh private key
+        - GitHub/GitHub Enterprise: GitHub App credentials
+
+    Repo credentials are stored as secrets (with label argocd.argoproj.io/secret-type: repository)
+    Credential Templates can be created as secrets with label argocd.argoproj.io/secret-type: repo-creds
+        In order for ArgoCD to use a credential template for any give repository:
+            - The URL configured for a credential template must match a prefix for the repository URL
+            - The repository must either not be configured at all, ir if configured, must not contain any credential information
