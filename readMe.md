@@ -3,7 +3,7 @@
 - It is NOT a CI tool.
 - Does not require open connectivity between CICD systems and the k8s cluster (more secure). 
 - Developer and DevOps engineer will update the Git code only
-- Wathches config repo for change and apply them (refreshes every 3 mins by default)
+- Watches config repo for change and apply them (refreshes every 3 mins by default)
 - Easy rollback
 - Easy deploy the same apps to any k8s cluster
 
@@ -91,10 +91,10 @@
     - kubectl port-forward svc/argocd-server -n argocd 8080:443
 
 ### Privileges options
-ArgoCD provide two options in-cluster previleges:
+ArgoCD provide two options in-cluster privileges:
 
-    - Cluster-admin privileges: where ArgoCD has the cluster-admin acccess to deploy into the cluster that runs in
-    - Namespace level pivileges: Use this manifest set if you do not need Argo CD to deploy applications in the same cluster that argo CD runs in
+    - Cluster-admin privileges: where ArgoCD has the cluster-admin access to deploy into the cluster that runs in
+    - Namespace level privileges: Use this manifest set if you do not need Argo CD to deploy applications in the same cluster that argo CD runs in
     
 ## Application
 - It is a k8s resource object representing a deployed application instance in an environment
@@ -163,14 +163,14 @@ ArgoCD provide two options in-cluster previleges:
 
 ## ApplicationSet
     Used to generate application manifests.
-    master generator multplies source and target
+    master generator multiplies source and target
     pull request generator defaults to 30 mins but this can be changed (requeueAfterSeconds) or hooks can be used. (After merge the application is deleted automatically)
     List generator allows us to target ARGO CD Applications to clusters based on a fixed list of cluster name/URL values
-        - any key/value elemen pair is supported
+        - any key/value element pair is supported
         - Clusters need to be pre-defined in ARGO CD
     Cluster generator allows us to generate applications based on the list of clusters defined within Argo CD
         - name, nameNormalized, server, metadata.labels.<key>, metadata.annotations.<key>
-        - additional key/valu pairs can be set manually via values field
+        - additional key/value pairs can be set manually via values field
         - {} can be used to target all clusters
 
     Git Generator: generates parameters based o files and folders that are contained within the Git Repository
@@ -187,7 +187,7 @@ ArgoCD provide two options in-cluster previleges:
 
 ## Best Practices
 
-    Seperate your code and app manifests with different repos
+    Separate your code and app manifests with different repos
     Use immutable manifest in production. Avoid using HEAD revision and use tags or commit SHA.
     If you want HPA to control the number of replicas, then don't include replicas in Git
     Don't store plain secrets in git
@@ -197,10 +197,10 @@ ArgoCD provide two options in-cluster previleges:
         - External secrets store
             - Hashicorp Vault
             - External Secrets Operator
-            - Clout secrets store
+            - Cloud secrets store
                 -Aws secret operator
 
-    Use a seperated ArgoCD instance for Production
+    Use a separated ArgoCD instance for Production
         - Use HA setup
 
     At least two instances should be used for ArgoCD
