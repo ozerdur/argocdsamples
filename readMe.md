@@ -160,3 +160,73 @@ ArgoCD provide two options in-cluster previleges:
         - Specific Version
         - Range Version
         - Latest Version
+
+## ApplicationSet
+    Used to generate application manifests.
+    master generator multplies source and target
+    pull request generator defaults to 30 mins but this can be changed (requeueAfterSeconds) or hooks can be used. (After merge the application is deleted automatically)
+    List generator allows us to target ARGO CD Applications to clusters based on a fixed list of cluster name/URL values
+        - any key/value elemen pair is supported
+        - Clusters need to be pre-defined in ARGO CD
+    Cluster generator allows us to generate applications based on the list of clusters defined within Argo CD
+        - name, nameNormalized, server, metadata.labels.<key>, metadata.annotations.<key>
+        - additional key/valu pairs can be set manually via values field
+        - {} can be used to target all clusters
+
+    Git Generator: generates parameters based o files and folders that are contained within the Git Repository
+        - Git Directory Generator: generates parameters using the directory structure
+        - Git Files Generator: generates parameters using the contents of Json/Yaml file found within  a specified repo
+            Ex: per config for every environment
+
+
+ ## Simple CI Example
+    Web App Repo: https://github.com/mabusaa/argocd-course-webapp
+    Config repo: https://github.com/mabusaa/argocd-course-webapp-config
+    ArgoCD: https://github.com/mabusaa/argocd-course-apps-definitions/blob/main/applications%20and%20projects/webapp-sample-application/webapp%20application.yaml
+
+
+## Best Practices
+
+    Seperate your code and app manifests with different repos
+    Use immutable manifest in production. Avoid using HEAD revision and use tags or commit SHA.
+    If you want HPA to control the number of replicas, then don't include replicas in Git
+    Don't store plain secrets in git
+        - Within Git
+            - Use sealed secrets
+            - SOPS
+        - External secrets store
+            - Hashicorp Vault
+            - External Secrets Operator
+            - Clout secrets store
+                -Aws secret operator
+
+    Use a seperated ArgoCD instance for Production
+        - Use HA setup
+
+    At least two instances should be used for ArgoCD
+        - Non Prod
+        - Prod
+
+    Use App off apps to manage ArgoCD application
+
+    Use Application Set and the power of generators to generate applications
+
+    App of Apps: used to deploy multiple app with only one app.  (Root App Directory and Root App Helm)
+        example: https://github.com/mabusaa/argocd-course-app-of-apps/tree/main
+
+    Static Environments
+        - Single branch
+            - Values-test.yaml
+            - Values-staging.yaml
+            - Values-prod-yaml
+
+        - Branch per static environment
+            - Test branch
+            - Staging branch
+            - Production branch(tags or commit SHA for production environments)
+
+    On-demand Environments
+        - Pull Request
+            - Created when a PR is opened and deleted when the PR is closed
+
+        - Single branch for on-demand environments and each folder will contain the related manifests( We need to write a script using CI pipeline to create these folders and manifest per Pull request)
